@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pet Shop - Nirvana</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #f0f8ff;
+      color: #333;
+    }
+    .login {
+      background: #d0e7ff;
+      text-align: center;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .login h2 {
+      color: red;
+    }
+    input[type="text"], input[type="password"] {
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #007BFF;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .hidden { display: none; }
+    .nav {
+      background: #add8e6;
+      padding: 10px;
+      display: flex;
+      justify-content: space-around;
+      font-weight: bold;
+    }
+    .nav a {
+      text-decoration: none;
+      color: #0056b3;
+    }
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+    .pet-list div {
+      margin: 10px;
+      padding: 10px;
+      border-radius: 15px;
+      background: #ffffff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pet-list div:hover {
+      background: #d6efff;
+    }
+    #participants {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login" id="login">
+    <h2>Don't enter your Roblox username and password!</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button onclick="loginUser()">Enter</button>
+  </div>
+
+  <div class="hidden" id="main">
+    <div class="nav">
+      <a href="#" onclick="showPets()">Link1 (Show Pets)</a>
+      <a href="#" onclick="showQuest()">Quest</a>
+      <a href="#" onclick="showGiveaway()">Giveaway</a>
+      <a href="https://www.roblox.com/users/8216750986/profile" target="_blank">Roblox</a>
+      <a href="https://discord.com/invite/DxGT4jUwBT" target="_blank">Discord</a>
+      <a href="https://tiktok.com" target="_blank">Contact us on TikTok</a>
+      <a href="https://wa.me/9779805178563" target="_blank">WhatsApp</a>
+    </div>
+
+    <div class="container">
+      <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">Tokens: <span id="tokenCount">9</span></div>
+      <div id="pets" class="pet-list hidden"></div>
+      <div id="quest" class="hidden"></div>
+      <div id="giveaway" class="hidden">
+        <h2>Giveaway</h2>
+        <div id="giveawayBefore">
+          <button onclick="joinGiveaway()">Buy with 1 Token</button>
+        </div>
+        <div id="giveawayForm" class="hidden">
+          <input type="text" id="giveawayUsername" placeholder="Enter your username">
+          <button onclick="submitGiveaway()">Submit</button>
+        </div>
+        <div id="giveawayMessage" style="margin-top: 15px; font-weight: bold;"></div>
+        <div id="participants"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let tokens = 9;
+    const participants = [];
+
+    const pets = [
+      ["774T", 100], ["Cooked Owl", 100], ["Blood Owl", 100], ["Night Owl", 100],
+      ["Moon Cat", 100], ["Moth", 100], ["Praying Mantis", 100], ["Turtle", 100],
+      ["Bear Bee", 100], ["Scarlet Macow", 100], ["Capybara", 150], ["Red Fox", 200],
+      ["Chicken Zombie", 200], ["Queen Bee", 350], ["Raccoon", 900], ["Dragonfly", 600],
+      ["Disco Bee", 850], ["Butterfly", 650], ["Mimic Octopus", 450], ["Fenec Fox", 1200],
+      ["Trex", 750], ["Sprinosarous", 300]
+    ];
+
+    function loginUser() {
+      document.getElementById("login").classList.add("hidden");
+      document.getElementById("main").classList.remove("hidden");
+    }
+
+    function showPets() {
+      const petsDiv = document.getElementById("pets");
+      petsDiv.innerHTML = "";
+      pets.forEach(pet => {
+        const div = document.createElement("div");
+        div.innerText = pet[0];
+        div.onclick = () => div.innerText = `${pet[0]} - Rs ${pet[1]}`;
+        petsDiv.appendChild(div);
+      });
+      petsDiv.classList.remove("hidden");
+      document.getElementById("quest").classList.add("hidden");
+      document.getElementById("giveaway").classList.add("hidden");
+    }
+
+    function showQuest() {
+      const questDiv = document.getElementById("quest");
+      const quests = [
+        "Search Iron Man - Get 1 Token",
+        "Search Spider-Man - Get 1 Token",
+        "Search Naruto - Get 1 Token"
+      ];
+      questDiv.innerHTML = `<h2>Random Quest:</h2><p>${quests[Math.floor(Math.random() * quests.length)]}</p>`;
+      questDiv.classList.remove("hidden");
+      document.getElementById("pets").classList.add("hidden");
+      document.getElementById("giveaway").classList.add("hidden");
+    }
+
+    function showGiveaway() {
+      document.getElementById("giveaway").classList.remove("hidden");
+      document.getElementById("pets").classList.add("hidden");
+      document.getElementById("quest").classList.add("hidden");
+    }
+
+    function joinGiveaway() {
+      if (tokens >= 1) {
+        tokens -= 1;
+        document.getElementById("tokenCount").innerText = tokens;
+        document.getElementById("giveawayBefore").classList.add("hidden");
+        document.getElementById("giveawayForm").classList.remove("hidden");
+      } else {
+        alert("Not enough tokens!");
+      }
+    }
+
+    function submitGiveaway() {
+      const userInput = document.getElementById("giveawayUsername").value.trim();
+      if (userInput !== "") {
+        participants.push(userInput);
+        document.getElementById("giveawayMessage").innerText = "🎉 You have joined the giveaway!";
+        updateParticipants();
+        document.getElementById("giveawayForm").classList.add("hidden");
+      } else {
+        alert("Please enter a username.");
+      }
+    }
+
+    function updateParticipants() {
+      const list = participants.map(name => `<li>${name}</li>`).join("");
+      document.getElementById("participants").innerHTML = `<h3>Participants:</h3><ul>${list}</ul>`;
+    }
+  </script>
+</body>
+</html>
